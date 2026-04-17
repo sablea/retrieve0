@@ -1,0 +1,37 @@
+# 示例工业术语表。部署时按实际业务替换/扩展。
+
+entries:
+  - term: 节拍
+    aliases: [Cycle Time, CT, 单件节拍]
+    definition: 产线连续生产同一种产品时，相邻两件产品完工的平均时间，单位秒。
+    related_tables: [production_log]
+    related_columns: [cycle_time_s]
+
+  - term: 一次合格率
+    aliases: [FPY, First Pass Yield, 首检合格率]
+    definition: 在不返工的前提下，一次性通过质检的产品占总检验产品的比例。
+    related_tables: [quality_inspection]
+    related_columns: [result]
+
+  - term: OEE
+    aliases: [设备综合效率, Overall Equipment Effectiveness]
+    definition: 设备综合效率 = 时间开动率 × 性能开动率 × 合格率，衡量设备产出效能。
+    related_tables: [equipment_status, production_log, quality_inspection]
+
+  - term: 停机
+    aliases: [Downtime, 宕机, 停线]
+    definition: 设备处于非运行状态（idle/fault/offline）的累计时长。
+    related_tables: [equipment_status]
+    related_columns: [status]
+
+  - term: 班次
+    aliases: [Shift, 早班, 中班, 晚班]
+    definition: 车间工作班次划分。morning=早班，afternoon=中班，night=夜班。
+    related_tables: [production_log]
+    related_columns: [shift]
+
+  - term: 缺陷代码
+    aliases: [Defect Code, NG 代码]
+    definition: 对缺陷原因的归类编码；仅当质检结果 fail 时有值。
+    related_tables: [quality_inspection]
+    related_columns: [defect_code]

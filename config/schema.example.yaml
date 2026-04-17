@@ -1,0 +1,45 @@
+# 示例 schema：车间产线 + 质量数据。结合真实库按需替换。
+
+tables:
+  - name: production_log
+    description: 车间产线下线记录（每件产品一行）。
+    primary_keys: [id]
+    columns:
+      - {name: id, type: bigint, description: 主键}
+      - {name: line_id, type: varchar(16), description: 产线编号, enum: [A01, A02, A03, B01, B02]}
+      - {name: product_code, type: varchar(32), description: 产品型号编码}
+      - {name: cycle_time_s, type: float, description: 单件节拍秒（工业术语，含义见 glossary "节拍"）}
+      - {name: start_at, type: datetime, description: 工序开始时间}
+      - {name: end_at, type: datetime, description: 工序结束时间}
+      - {name: operator_id, type: varchar(16), description: 操作员工号}
+      - {name: shift, type: varchar(8), description: 班次, enum: [morning, afternoon, night]}
+    examples:
+      - "昨天 A02 线的平均节拍是多少"
+      - "A01 线上午班最近一周每天的产量"
+
+  - name: quality_inspection
+    description: 质检记录（每件产品抽检一行，可能为空）。
+    primary_keys: [id]
+    columns:
+      - {name: id, type: bigint, description: 主键}
+      - {name: production_id, type: bigint, description: 关联 production_log.id}
+      - {name: inspector_id, type: varchar(16), description: 质检员工号}
+      - {name: result, type: varchar(8), description: 检验结果, enum: [pass, fail, rework]}
+      - {name: defect_code, type: varchar(16), description: 缺陷编码（result=fail 时非空）}
+      - {name: inspected_at, type: datetime, description: 质检时间}
+    examples:
+      - "上周 A 线的一次合格率"
+      - "最近 3 天缺陷代码 Top 5"
+
+  - name: equipment_status
+    description: 设备状态时序（每 1 分钟一条）。
+    primary_keys: [equipment_id, ts]
+    columns:
+      - {name: equipment_id, type: varchar(16), description: 设备编号}
+      - {name: ts, type: datetime, description: 时间戳}
+      - {name: status, type: varchar(12), description: 设备状态, enum: [run, idle, fault, offline]}
+      - {name: temperature_c, type: float, description: 主轴温度（摄氏度）}
+      - {name: power_kw, type: float, description: 功率（千瓦）}
+    examples:
+      - "EQ-1001 昨天总停机时长"
+      - "过去 24 小时温度超过 80 度的设备"
