@@ -1,0 +1,11 @@
+name: sql_retrieval
+description: 面向工业制造数据的 MySQL 检索 skill，支持 schema 浏览、术语召回、SQL 执行与记忆读写。
+version: 0.1.0
+entry: re0.skills.sql_retrieval.handler:SqlRetrievalSkill
+tools:
+  - inspect_table
+  - glossary_lookup
+  - execute_sql
+  - recall_memory
+  - save_memory
+  - correct_memory
